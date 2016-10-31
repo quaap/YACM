@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 14, 2009 10:05:10 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.quaap.yacm.storage.bean.Content" table="yacm_content">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+      <!-- If I set this to identity it fails to make the column auto-increment. -->
+    </id>
+    <many-to-one class="com.quaap.yacm.storage.bean.Content" column="parent" name="parent" not-null="false"/>
+    <property name="path" type="string">
+      <column length="1024" name="path"/>
+    </property>
+    <property name="version" type="java.lang.Integer">
+      <column name="version"/>
+    </property>
+    <property name="state" type="java.lang.Integer">
+      <column name="state"/>
+    </property>
+    <property name="blob" type="java.lang.Boolean">
+      <column name="isblob"/>
+    </property>
+    <property name="contenttype" type="string">
+      <column length="64" name="contenttype"/>
+    </property>
+    <property name="markuptype" type="java.lang.Integer">
+      <column name="markuptype"/>
+    </property>
+    <property name="title" type="string">
+      <column length="1024" name="title"/>
+    </property>
+    <property name="length" type="java.lang.Integer">
+      <column name="length"/>
+    </property>
+    <property name="content" type="string">
+      <column name="content" sql-type="longtext"/>
+    </property>
+    <many-to-one cascade="all" class="com.quaap.yacm.storage.bean.BinContent" name="binContent"/>
+    <!--<property name="binContent" type="blob" lazy="true" >
+      <column name="bin_content"/>
+    </property>-->
+    <many-to-one class="com.quaap.yacm.storage.bean.User" column="creator" name="creator"/>
+    <!--<property name="creator" type="com.quaap.yacm.storage.bean.User">
+      <column name="creator"/>
+    </property>-->
+    <many-to-one class="com.quaap.yacm.storage.bean.User" column="last_modifier" name="lastModifier"/>
+    <!--<property name="lastModifier" type="com.quaap.yacm.storage.bean.User">
+      <column name="last_modifier"/>
+    </property>-->
+    <property name="createDate" type="timestamp">
+      <column name="create_date"/>
+    </property>
+    <property name="modifiedDate" type="timestamp">
+      <column name="modified_date"/>
+    </property>
+    <property name="changeReason" type="string">
+      <column name="change_reason" sql-type="mediumtext"/>
+    </property>
+  </class>
+</hibernate-mapping>

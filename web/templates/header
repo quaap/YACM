@@ -1,0 +1,152 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <#if (content.title)??>
+        <#assign title>${content.title?xhtml}</#assign>
+   <#else>
+        <#assign title>${context.path?xhtml}</#assign>
+   </#if>
+   <#if !title??>
+        <#assign title>Page</#assign>
+   </#if>
+   <title>${title} - Craptaculus.com</title>
+   <link type="text/css" rel="stylesheet" href="${api.getUrl("resources", "main.css")}"/>
+
+   <#if content?? &&(context.action=="viewcomments" || context.action=="view")>
+      <link rel="alternate" type="application/rss+xml" title="Updated pages in ${context.path}" href="${api.getUrl("rssupdates", context.path)}" />
+      <link rel="alternate" type="application/rss+xml" title="New pages in ${context.path}" href="${api.getUrl("rssnew", context.path)}" />
+      <link rel="alternate" type="application/rss+xml" title="Comments for ${context.path}" href="${api.getUrl("rsscomments", context.path)}" />
+   </#if>
+
+   <script type="text/javascript" src="${api.getUrl("resources", "main.js")}"></script>
+</head>
+<body>
+<div id="header">
+ <div id="header2">
+   <span class="site-name">Craptaculus.com</span>
+   <div class="toolbar">
+      <#if context.isContentAction()>
+         <#if content??>
+            <#if context.action!="view" || param.r?? || param.source??>
+                <a class="button" href="${api.getUrl("view", context.path)}">View</a>
+            </#if>
+            <#if context.action!="history" && context.hasHistoryRight()>
+               <a class="button" href="${api.getUrl("history", context.path)}">History</a>
+            </#if>
+            <#if context.action!="viewcomments">
+               <a class="button" href="${api.getUrl("viewcomments", context.path)}#comments">Comments</a>
+            </#if>
+         </#if>
+         <#if context.hasEditRight() && !isStaticPage??>
+            <#if content??>
+               <#if content.isBlob()>
+                  <a class="button" href="${api.getUrl("upload", context.path)}">Edit</a>
+               <#else>
+                  <#if !param.source??>
+                     <a class="button" href="${api.getUrl("view", context.path, "source=1")}">Source</a>
+                  </#if>
+                  <#if content.parent??>
+                     <a class="button" href="${api.getUrl("editcomment", context.path)}">Edit</a>
+                  <#else>
+                     <a class="button" href="${api.getUrl("edit", context.path)}">Edit</a>
+                  </#if>
+               </#if>
+            <#else>
+               <#if context.action!="edit">
+                  <a class="button" title="Create this page" href="${api.getUrl("edit", context.path)}">Edit</a>
+               </#if>
+               <#if context.action!="upload">
+                  <a class="button" title="Upload a file" href="${api.getUrl("upload", context.path)}">Upload</a>
+               </#if>
+            </#if>
+            <#if context.hasDeleteRight()>
+               <a class="button" href="${api.getUrl("delete", context.path)}">Delete</a>
+            </#if>
+            <#if context.hasAdminRight()>
+               <a class="button" href="${api.getUrl("permissions", context.path)}">Access control</a>
+            </#if>
+         </#if>
+      </#if>
+      <#if context.action=="index">
+          <a class="button" href="${api.getUrl("view", context.path)}">View</a>
+      </#if>
+
+      <#if context.isAdmin()>
+         <a class="button" href="${api.getUrl("admin", "")}">Admin</a>
+      </#if>
+      <#if context.isAnon()>
+         <a class="button" href="${api.getUrl("login", context.path, "xfer=${api.getUrl(context.action, context.path)}")}">Login</a>
+      <#else>
+         <a class="button" href="${api.getUrl("logout", context.path, "xfer=${api.getUrl(context.action, context.path)}")}">Logout</a>
+         <div class="logininfo">
+            Hello ${api.getUserLink(context.user)}
+         </div>
+      </#if>
+   </div>
+   <div style="clear:both"></div>
+  </div>
+  <h1>${title}</h1>
+</div>
+<div id="nav-bar">
+   <#if context.path?contains("/")>
+      <a class="button" href="${api.getUrl("view", context.path?replace("/[^/]*$","", "r"))}">Parent</a>
+   </#if>
+   <#if context.action!="index" && context.path!="default" && context.hasSubpages()>
+       <a class="button" href="${api.getUrl("index", context.path)}">Index</a>
+   </#if>
+
+   <a class="button" href="${api.getUrl("view","default")}">Home</a>
+   <#if !(context.action=="index" && context.path=="default")>
+       <a class="button" href="${api.getUrl("index", "default")}">Site Index</a>
+   </#if>
+
+   <a class="button" href="${api.getUrl("edit","")}" onclick="var name=prompt('Name for the new page:'); if (name) {this.href += name; return true;}; return false;">Create Page</a>
+   <a class="button" href="${api.getUrl("edit",context.path + "/")}" onclick="var name=prompt('Name for the new page:'); if (name) {this.href += name; return true;}; return false;">Create Subpage</a>
+
+
+   <a class="button" href="${api.getUrl("view","search")}">Search</a>
+   <br />
+   <hr />
+
+   Recently visited:
+   <#list context.getUniqueRecentPages() as c>
+      <a href="${api.getUrl("view", c.path)}"><#if c.title?? && c.title?length!=0>${c.title?xhtml}<#else>${c.path?xhtml}</#if></a>
+   </#list>
+
+
+   <br />
+   <hr />
+   Newest Pages:
+   <#list api.getNewestContent(0, 10) as c>
+      <a href="${api.getUrl("view", c.path)}" title="${c.createDate?string("yyyy-MM-dd")?xhtml}"><#if c.title?? && c.title?length!=0>${c.title?xhtml}<#else>${c.path?xhtml}</#if></a>
+   </#list>
+
+   <br />
+   <hr />
+   Updated Pages:
+   <#list api.getRecentlyModifiedContent(0, 10) as c>
+      <a href="${api.getUrl("view", c.path)}" title="${c.modifiedDate?string("yyyy-MM-dd")?xhtml}"><#if c.title?? && c.title?length!=0>${c.title?xhtml}<#else>${c.path?xhtml}</#if></a>
+   </#list>
+
+</div>
+<div id="main-content">
+<!--<#if message??><div class="message-box">${message?xhtml}</div></#if>-->

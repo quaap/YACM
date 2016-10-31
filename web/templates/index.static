@@ -1,0 +1,66 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<#include "header">
+
+<#assign start= (param.start!"0")?number>
+
+<#if context.path == "default">
+   <#list api.getNewestContent(start, 20) as c>
+      <#if c.path != context.path>
+         <@indexitem contentitem=c/>
+      </#if>
+   </#list>
+
+<#else>
+   <h1>${context.path?xhtml}</h1>
+   <#list api.getNewestContent(content, start, 20) as c>
+      <#if c.path != context.path>
+         <@indexitem contentitem=c/>
+      </#if>
+   </#list>
+</#if>
+
+<a class="button" href="${api.getUrl("view", context.path)}">View section main</a>
+
+<#if start &gt; 0>
+<a class="button" href="${api.getUrl("index", context.path, "start=" + (start - 20))}">Previous</a>
+</#if>
+
+<a class="button" href="${api.getUrl("index", context.path, "start=" + (start + 20))}">Next</a>
+
+
+<#macro indexitem contentitem>
+<div class="index-item">
+   <h3 class="index-item-title"><a href="${api.getUrl("view", contentitem.path)}"><#if contentitem.title?? && contentitem.title != "">${(contentitem.title?xhtml)!}<#else>${contentitem.path?xhtml}</#if></a></h3>
+   <div class="index-item-content">
+      <#if api.hasPermission(context.user, contentitem, api.viewRight)>
+          <@markup markuplevel=contentitem.markupType.id contextpath=contentitem.path  cachekey=contentitem.path cachetimeout=32>
+            ${(contentitem.content)!}
+          </@markup>
+      <#else>
+         Protected content
+      </#if>
+   </div>
+   <a class="permalink" href="${api.getUrl("view", contentitem.path)}">link</a>
+   <div class="index-item-footer">
+       <div class="revision">Version ${contentitem.version!}</div>
+       <div class="created-date">Created on ${contentitem.createDate?string("yyyy-MM-dd HH:mm zzz")?xhtml} by ${api.getUserLink(contentitem.creator)}</div>
+       <div class="modified-date">Modified on ${contentitem.modifiedDate?string("yyyy-MM-dd HH:mm zzz")?xhtml} by ${api.getUserLink(contentitem.lastModifier)}</div>
+   </div>
+</div>
+</#macro>
+
+<#include "footer">

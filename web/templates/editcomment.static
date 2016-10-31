@@ -1,0 +1,94 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<#include "header">
+
+In reply to:
+<div class="commented-content">
+<a name="commented-content"/>
+<h2>${parent.title?xhtml}</h2>
+<#if parent.isBlob()>
+   <#if parent.contenttype?starts_with("image")>
+      <@markup>
+         {{${context.path}|${parent.title}}}
+      </@markup>
+   </#if>
+<#else>
+   <@markup markuplevel=parent.markupType.id contextpath=parent.path>
+      ${(parent.content)!}
+   </@markup>
+</#if>
+</div>
+
+
+<#if param.pagecontent??>
+<a name="comment-preview"/>
+<h2>Preview</h2>
+<div class="previewed-content">
+<a name="previewed-contnet"/>
+<@markup>
+----
+${param.pagecontent}
+----
+</@markup>
+</div>
+</#if>
+
+
+<a name="comment-form"/>
+<h2>Add a comment</h2>
+<table>
+<tr><td style="vertical-align: top">
+<form name="pagecontentform" method="post" action="${api.getUrl("save", context.path)}">
+<div>
+<p>Title: <input name="pagetitle" type="text" value="<#if param.pagetitle??>${api.XMLEncode(param.pagetitle)}<#elseif content??>${api.XMLEncode(content.title)}</#if>"/></p>
+<p>Page text:<br />
+<textarea rows="24" cols="90" name="pagecontent"><#if param.pagecontent??>${api.XMLEncode(param.pagecontent)}<#elseif content??>${api.XMLEncode(content.content)}</#if></textarea>
+</p>
+
+
+<#if context.hasAdminRight()>
+   <p>State:
+   <select name="pagestate">
+      <#list api.contentStates as c>
+         <#if context.hasRight(c.requiredPermission)>
+            <option value="${c.id}" <#if content?? && content.contentState.id == c.id>selected="selected"</#if>>${c.description}</option>
+         </#if>
+      </#list>
+   </select>
+   </p>
+</#if>
+
+
+<p>
+ <input type="hidden" name="pageparent" value="${parent.path?xhtml}"/>
+ <input type="hidden" name="pageversion" value="${(content.version)!0}"/>
+ <input type="hidden" name="seckey" value="${securityKey?xhtml}"/>
+ <input type="submit" name="action" value="Save"/>
+ <input onclick="this.form.action='${api.getUrl("editcomment", context.path + "#comment-preview")}'" type="submit" name="action" value="Preview"/>
+ <input onclick="this.form.action='${api.getUrl("viewcomments", parent.path)}'" type="submit" name="action" value="Cancel"/>
+</p>
+
+</div>
+</form>
+
+</td>
+<td>
+<#include "syntaxquickhelp.static">
+</td>
+</tr>
+</table>
+
+<#include "footer">

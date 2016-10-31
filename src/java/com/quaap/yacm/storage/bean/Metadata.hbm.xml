@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 14, 2009 10:05:10 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.quaap.yacm.storage.bean.Metadata" table="yacm_metadata">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="content" type="java.lang.Integer">
+      <column name="content"/>
+    </property>
+    <property name="type" type="java.lang.Integer">
+      <column name="type"/>
+    </property>
+    <property name="name" type="string">
+      <column length="255" name="name"/>
+    </property>
+    <property name="value" type="string">
+      <column length="2048" name="value"/>
+    </property>
+    <!--    <property name="submitter" type="java.lang.Integer">
+      <column name="submitter"/>
+    </property>
+    <property name="createDate" type="timestamp">
+      <column name="create_date"/>
+    </property>
+    <property name="modifiedDate" type="timestamp">
+      <column name="modified_date"/>
+    </property>-->
+  </class>
+</hibernate-mapping>

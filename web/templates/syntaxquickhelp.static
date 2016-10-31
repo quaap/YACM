@@ -1,0 +1,105 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+
+Wiki syntax help
+<table class="syntaxhelp">
+
+<tr>
+   <th onclick="toggle_visibility('headings')"> Headings </th>
+</tr>
+<tr id="headings" style="display: none">
+   <td>
+      <pre>
+= Top-level heading
+== 2nd-level heading
+=== 3rd-level heading
+==== 4th-level heading
+===== 5th-level heading
+      </pre>
+   </td>
+</tr>
+
+<tr>
+   <th onclick="toggle_visibility('links')"> Links </th>
+</tr>
+<tr id="links" style="display: none">
+   <td>
+      <pre>
+[[otherpage]]
+[[otherpage|link title]]
+[[http://example.com]]
+[[http://example.com|link title]]
+      </pre>
+   </td>
+</tr>
+
+<tr>
+   <th onclick="toggle_visibility('images')"> Images </th>
+</tr>
+<tr id="images" style="display: none">
+   <td>
+      <pre>
+{{imagename.jpg}}
+{{somedir/imagename.jpg}}
+{{imagename.jpg|title for image}}
+      </pre>
+   </td>
+</tr>
+
+<tr>
+   <th onclick="toggle_visibility('markups')"> Markup </th>
+</tr>
+<tr id="markups" style="display: none">
+   <td>
+<@markup>
+|~//italics~//|//italics//|
+|~**bold~**|**bold**|
+|~__underline~__|__underline__|
+|~--strikethrough~--|--strikethrough--|
+|super~^^script~^^|super^^script^^|
+|sub~,,script~,,|sub,,script,,|
+</@markup>
+   </td>
+</tr>
+
+<tr>
+   <th onclick="toggle_visibility('symbols')">Symbols</th>
+</tr>
+<tr id="symbols" style="display: none">
+   <td>
+<@markup>
+| ~`` | `` | | ~'' | '' | | ~-- | -- |
+| ~(TM) | (TM) | | ~(~) | (~) | | ~(&) | (&) |
+| ~(*) | (*) | | ~(8) | (8) | | ~(@) | (@) |
+| ~(^) | (^) | | ~(B) | (B) | | ~(c) | (c) |
+| ~(D) | (D) | | ~(e) | (e) | | ~(f) | (f) |
+| ~(g) | (g) | | ~(i) | (i) | | ~(L) | (L) |
+| ~(n) | (n) | | ~(O) | (O) | | ~(P) | (P) |
+| ~(R) | (R) | | ~(t) | (t) | | ~(u) | (u) |
+| ~(w) | (w) | | ~(y) | (y) | | ~:'-( | :'-( |
+| ~8-) | 8-) | | ~:-$ | :-$ | | ~:-( | :-( |
+| ~:-) | :-) | | ~:-@ | :-@ | | ~:-[ | :-[ |
+| ~:-D | :-D | | ~:-O | :-O | | ~:-P | :-P |
+| ~:-S | :-S | | ~:-X | :-X | | ~;-) | ;-) |
+| ~:) | :) |
+
+</@markup>
+   </td>
+</tr>
+
+</table>
+
+

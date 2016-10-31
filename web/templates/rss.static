@@ -1,0 +1,98 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<#assign start = (param.start!"0")?number>
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">>
+   <channel>
+      <link>${context.serverURL?xhtml}</link>
+      <language>en-us</language>
+      <pubDate>${api.makeRfc822Date()?xhtml}</pubDate>
+      <lastBuildDate>${api.makeRfc822Date()?xhtml}</lastBuildDate>
+      <generator>YACM</generator>
+      <atom:link href="${context.pageURL?xhtml}" rel="self" type="application/rss+xml" />
+      <#if context.action == "rssupdates" && context.path == "default">
+         <title>Recently modified pages for ${context.serverURL?xhtml}</title>
+         <description>Recently modified pages for ${context.serverURL?xhtml}</description>
+
+         <#list api.getRecentlyModifiedContent(start, 20) as c>
+            <@rssitem contentitem=c/>
+         </#list>
+
+      <#elseif context.action == "rssupdates">
+         <title>Recently modified pages for ${content.path?xhtml}</title>
+         <description>Recently modified pages for page ${content.path?xhtml}</description>
+
+         <#list api.getRecentlyModifiedContent(content, start, 20) as c>
+            <@rssitem contentitem=c/>
+         </#list>
+
+      <#elseif context.action == "rssnew" && context.path == "default">
+         <title>Recently created pages for ${context.serverURL?xhtml}</title>
+         <description>Recently created pages for ${context.serverURL?xhtml}</description>
+
+         <#list api.getNewestContent(start, 20) as c>
+           <@rssitem contentitem=c/>
+         </#list>
+
+      <#elseif context.action == "rssnew">
+         <title>Recently created pages for ${content.path?xhtml}</title>
+         <description>Recently created pages for page ${content.path?xhtml}</description>
+
+         <#list api.getNewestContent(content, start, 20) as c>
+           <@rssitem contentitem=c/>
+         </#list>
+
+      <#elseif context.action == "rsscomments">
+         <title>Comments for ${content.path?xhtml}</title>
+         <description>Comments for page ${content.path?xhtml}</description>
+
+         <@rsscomments content=content />
+
+      <#else>
+         Unknown
+      </#if>
+
+   </channel>
+</rss>
+
+
+<#macro rssitem contentitem>
+<item>
+   <link>${api.getAbsUrl("view", contentitem.path)}</link>
+   <guid isPermaLink="true">${api.getAbsUrl("view", contentitem.path)}</guid>
+   <title><#if contentitem.title?? && contentitem.title != "">${(contentitem.title?xhtml)!}<#else>${contentitem.creator.username?xhtml}</#if></title>
+   <author>${contentitem.creator.name?xhtml} (${contentitem.creator.username?xhtml})</author>
+   <pubDate>${api.makeRfc822Date(contentitem.createDate)?xhtml}</pubDate>
+   <description>
+      <#if api.hasPermission(context.user, contentitem, api.viewRight)>
+        <@markup markuplevel=api.htmlEscape.id cachekey=contentitem.path cachetimeout=32>
+          <@markup markuplevel=contentitem.markupType.id contextpath=contentitem.path>
+            ${(contentitem.content)!}
+          </@markup>
+       </@markup>
+     <#else>
+      Protected content.
+     </#if>
+ </description>
+</item>
+</#macro>
+
+<#macro rsscomments content>
+   <#list api.getComments(content) as comment>
+      <@rssitem contentitem=comment />
+      <@rsscomments content=comment />
+   </#list>
+</#macro>

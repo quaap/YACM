@@ -1,0 +1,126 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<#include "header">
+
+<div class="main-content">
+
+<h1>Page Permissions</h1>
+
+<form name="pagepermissionsform" method="post" action="${api.getUrl("save", context.path)}">
+<div>
+
+<#macro htmlselect name options selected>
+    <select name="${name}">
+    <option value=""></option>
+    <#list options as option>
+        <#if option!="admin">
+            <option<#if option==selected> selected="selected"</#if>>${option}</option>
+        </#if>
+    </#list>
+    </select>
+</#macro>
+
+<#macro htmlmultiselect name size options selected>
+    <select name="${name}" size="${size}">
+    <option value=""></option>
+    <#list options as option>
+        <option<#if selected?seq_contains(option)> selected="selected"</#if>>${option}</option>
+    </#list>
+    </select>
+</#macro>
+
+<table>
+
+<#if (context.permissions?size > 0 || param.addnew??) >
+    <tr><td></td>
+    <th>User</th>
+    <th>Group</th>
+    <th>View</th>
+    <th>History</th>
+    <th>Comment</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    <th>Create</th>
+    <#if context.isAdmin()>
+       <th>Html</th>
+       <th>Programming</th>
+    </#if>
+    <th>Admin</th>
+    <td></td>
+    <#if (context.permissions?size > 0)>
+        <th>Delete?</th>
+    </#if>
+    </tr>
+</#if>
+
+<#assign groupnames=api.groupnames>
+<#assign usernames=api.usernames>
+
+<#list context.permissions as perm>
+    <tr><td>${perm_index + 1}<input type="hidden" name="permid${perm_index}" value="${perm.id}"/></td>
+    <td><@htmlselect "permusername${perm_index}" usernames "${(perm.user.username)!}"/></td>
+    <td><@htmlselect "permgroupname${perm_index}" groupnames "${(perm.group.groupname)!}"/></td>
+    <td><input type="checkbox" name="permview${perm_index}" value="true" <#if perm.view!false> checked="checked"</#if>/></td>
+    <td><input type="checkbox" name="permhistory${perm_index}" value="true" <#if perm.history!false> checked="checked"</#if>/></td>
+    <td><input type="checkbox" name="permcomment${perm_index}" value="true" <#if perm.comment!false> checked="checked"</#if>/></td>
+    <td><input type="checkbox" name="permedit${perm_index}" value="true" <#if perm.edit!false> checked="checked"</#if>/></td>
+    <td><input type="checkbox" name="permdelete${perm_index}" value="true" <#if perm.delete!false> checked="checked"</#if>/></td>
+    <td><input type="checkbox" name="permadd${perm_index}" value="true" <#if perm.add!false> checked="checked"</#if>/></td>
+    <#if context.isAdmin()>
+       <td><input type="checkbox" name="permhtml${perm_index}" value="true" <#if perm.html!false> checked="checked"</#if>/></td>
+       <td><input type="checkbox" name="permprogramming${perm_index}" value="true" <#if perm.programming!false> checked="checked"</#if>/></td>
+    </#if>
+    <td><input type="checkbox" name="permadmin${perm_index}" value="true" <#if perm.admin!false> checked="checked"</#if>/></td>
+
+    <td> &nbsp; &nbsp; &nbsp; &nbsp;</td>
+    <td> <input type="checkbox" name="deleteperm${perm_index}" value="${perm.id}"/></td>
+</#list>
+
+<tr><td>&nbsp;</td></tr>
+
+<#if param.addnew??>
+    <tr>
+    <td>New:</td>
+    <td><@htmlselect "permusername" usernames ""/></td>
+    <td><@htmlselect "permgroupname" groupnames ""/></td>
+    <td><input type="checkbox" name="permview" value="true" /></td>
+    <td><input type="checkbox" name="permhistory" value="true" /></td>
+    <td><input type="checkbox" name="permcomment" value="true" /></td>
+    <td><input type="checkbox" name="permedit" value="true" /></td>
+    <td><input type="checkbox" name="permdelete" value="true" /></td>
+    <td><input type="checkbox" name="permadd" value="true" /></td>
+    <#if context.isAdmin()>
+       <td><input type="checkbox" name="permhtml" value="true"/></td>
+       <td><input type="checkbox" name="permprogramming" value="true"/></td>
+    </#if>
+    <td><input type="checkbox" name="permadmin" value="true" /></td>
+    </tr>
+<#else>
+    <tr>
+    <td colspan="2"><a href="${api.getUrl("permissions", context.path + "?addnew=1")}">Add New</a></td>
+    </tr>
+</#if>
+</table>
+
+
+<p> <input type="hidden" name="seckey" value="${securityKey}"/>
+<input type="submit" name="action" value="Save"/><input type="submit" name="action" value="Cancel"/></p>
+</div>
+</form>
+
+</div>
+
+<#include "footer">

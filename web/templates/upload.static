@@ -1,0 +1,57 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<#include "header">
+
+<form name="pagecontentform" enctype="multipart/form-data" method="post" action="${api.getUrl("save", context.path)}">
+<div>
+<p>Title: <input name="pagetitle" type="text" value="<#if param.pagetitle??>${api.XMLEncode(param.pagetitle)}<#elseif content??>${api.XMLEncode(content.title)}</#if>"/></p>
+<p>File:  <input type="file" size="30" name="pageblobcontent" onchange="this.form['pagemimetype'].value=''"/>
+</p>
+<p>Reason for change / change comment (optional)<br/>
+<input size="70" name="pagecomment" value="<#if param.pagecomment??>${api.XMLEncode(param.pagecomment)}</#if>" />
+</p>
+
+<a href="" onclick="toggle_visibility('settings'); return false;">Advanced Settings</a>
+<div id="settings" style="display:none">
+
+   <p>State:
+   <select name="pagestate">
+      <#list api.contentStates as c>
+         <#if context.hasRight(c.requiredPermission)>
+            <option value="${c.id}" <#if content?? && content.contentState.id == c.id>selected="selected"</#if>>${c.description}</option>
+         </#if>
+      </#list>
+   </select>
+   </p>
+
+
+   <#if context.hasHtmlRight()>
+   <p>Mimetype: <input name="pagemimetype" type="text" size="16" value="<#if param.pagemimetype??>${api.XMLEncode(param.pagemimetype)}<#elseif content??>${api.XMLEncode(content.contenttype)}</#if>"/> (eg text/xml)</p>
+   </#if>
+
+</div>
+
+<p>
+ <input type="hidden" name="pageversion" value="${(content.version)!0}"/>
+ <input type="hidden" name="seckey" value="${securityKey}"/>
+ <input type="submit" name="action" value="Save"/>
+ <input type="submit" name="action" value="Cancel"/>
+</p>
+
+</div>
+</form>
+
+<#include "footer">

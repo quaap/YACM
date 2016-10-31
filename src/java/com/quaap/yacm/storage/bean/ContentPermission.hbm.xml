@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 14, 2009 10:05:10 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.quaap.yacm.storage.bean.ContentPermission" table="yacm_content_perms">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="content" type="java.lang.Integer">
+      <column name="content"/>
+    </property>
+    <many-to-one class="com.quaap.yacm.storage.bean.User" column="user" name="user"/>
+    <many-to-one class="com.quaap.yacm.storage.bean.Group" column="ugroup" name="group"/>
+    <property name="view" type="java.lang.Boolean">
+      <column name="hasview" sql-type="boolean"/>
+    </property>
+    <property name="history" type="java.lang.Boolean">
+      <column name="hashistory" sql-type="boolean"/>
+    </property>
+    <property name="comment" type="java.lang.Boolean">
+      <column name="hascomment" sql-type="boolean"/>
+    </property>
+    <property name="edit" type="java.lang.Boolean">
+      <column name="hasedit" sql-type="boolean"/>
+    </property>
+    <property name="delete" type="java.lang.Boolean">
+      <column name="hasdelete" sql-type="boolean"/>
+    </property>
+    <property name="add" type="java.lang.Boolean">
+      <column name="hasadd" sql-type="boolean"/>
+    </property>
+    <property name="html" type="java.lang.Boolean">
+      <column name="hashtml" sql-type="boolean"/>
+    </property>
+    <property name="programming" type="java.lang.Boolean">
+      <column name="hasprogramming" sql-type="boolean"/>
+    </property>
+    <property name="admin" type="java.lang.Boolean">
+      <column name="hasadmin" sql-type="boolean"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 14, 2009 10:05:10 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.quaap.yacm.storage.bean.Visit" table="yacm_visit">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Long">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="action" type="string">
+      <column length="32" name="action"/>
+    </property>
+    <property name="path" type="string">
+      <column length="1024" name="path"/>
+    </property>
+    <property name="querystr" type="string">
+      <column length="1024" name="querystr"/>
+    </property>
+    <property name="user" type="java.lang.Integer">
+      <column name="user"/>
+    </property>
+    <property name="accessDate" type="timestamp">
+      <column name="access_date"/>
+    </property>
+    <property name="ip" type="string">
+      <column length="32" name="ip"/>
+    </property>
+    <property name="referrer" type="string">
+      <column length="2048" name="referrer"/>
+    </property>
+    <property name="browser" type="string">
+      <column length="1024" name="browser"/>
+    </property>
+    <property name="error" type="string">
+      <column length="1024" name="error"/>
+    </property>
+  </class>
+</hibernate-mapping>

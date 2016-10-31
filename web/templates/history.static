@@ -1,0 +1,88 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<#include "header">
+
+<form name="pagehistoryform" method="get" action="${api.getUrl("history", context.path)}">
+
+<#assign rstart = 0>
+<#assign rstop = 0>
+<#if param.r??>
+   <#assign rstart = param.r?number>
+   <#assign rstop = content.version>
+<#elseif param.r1?? && param.r2??>
+   <#assign rstart = param.r1?number>
+   <#assign rstop = param.r2?number>
+</#if>
+<#if rstart != 0>
+   <#list rstart-1 .. rstop-1 as r>
+      <#if r<rstop >
+         <#assign diffs = context.getContentDiff(r, r+1)>
+         Version ${r+1}
+
+      </#if>
+      <div class="source view-diff">
+      <#list diffs as diff><span class="diff-${diff.operationText}">${diff.text?xhtml?replace("\n","<br/>\n")}</span></#list>
+      </div>
+      <hr class="yacm-hr"/>
+   </#list>
+   <div class="diff-key">Key: <span class="diff-insert">inserted text</span> <span class="diff-delete">removed text</span></div>
+</#if>
+
+<#if !diffs??>
+
+   <table class="history">
+   <tr><th>Version</th><th>Date</th><th>User</th><!--<th>Type</th>--><th>Save comment</th><th>R1</th><th>R2</th></tr>
+   <#list history?reverse as item>
+      <tr>
+         <td>
+            ${item.version}
+            <#if item.version==content.version><span style="font-size:small">(Current)</span></#if>
+         </td>
+         <td>${item.modifiedDate?string("yyyy-MM-dd HH:mm:ss zzz")}</td>
+         <td>${api.getUserLink(item.user)}</td>
+         <!--<td>${item.changeType?xhtml}</td>-->
+         <td title="${item.changeReason?xhtml}">${api.truncate(item.changeReason, 40)?xhtml}</td>
+         <td><input type="radio" id="r1-${item.version}" name="r1" value="${item.version}" <#if item.version==(content.version-1)>checked="checked"</#if>/></td>
+         <td><input type="radio" id="r2-${item.version}" name="r2" value="${item.version}" <#if item.version==content.version>checked="checked"</#if>/></td>
+         <td>
+            <a href="${api.getUrl("view", context.path, "r=" + item.version)}">view</a>
+            <a href="${api.getUrl("view", context.path, "r=" + item.version + "&source=1")}">source</a>
+            <a href="${api.getUrl("history", context.path, "r=" + item.version)}">diff</a>
+            <#if item.version!=content.version && context.hasEditRight()>
+               <a href="${api.getUrl("save", context.path, "action=replace&seckey=${securityKey}&r=${item.version}")}"
+                 onclick="return confirm('Are you sure you want to replace the current version with this version')">replace</a>
+            </#if>
+         </td>
+      </tr>
+   </#list>
+  <tr><td><br/></td></tr>
+
+   <tr>
+      <td colspan="4"></td>
+      <td colspan="3">
+         <input type="submit" value="View differences"/>
+         <input type="submit" name="action" value="Cancel"/>
+      </td>
+   </tr>
+   </table>
+
+   <p>
+   </p>
+
+   </form>
+</#if>
+
+<#include "footer">

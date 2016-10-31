@@ -1,0 +1,53 @@
+<#--
+ *  Copyright (c) 2009 Thomas Kliethermes, thamus@kc.rr.com
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+-->
+<#include "header">
+
+<#assign puser = api.getUser(context.path)!>
+
+<#if (puser.id)??>
+   <h1>${puser.username?xhtml}'s profile</h1>
+
+   <p>${puser.name?xhtml}</p>
+
+   <p>${puser.info?xhtml}</p>
+
+
+   <#if context.path == context.user.username && !context.isAnon()>
+       <a href="javascript://null" onclick="toggle_visibility('editprofileform')">Edit your profile</a>
+       <div id="editprofileform" style="display:none">
+           <h2>Edit your profile</h2>
+           <form action="${api.getUrl("saveuser", context.path)}" method="post">
+           Username: <input name="username" type="text" value="${context.user.username?xhtml}" <#if context.user.username=="admin" || context.isAnon()>readonly="readonly"</#if> /> <br />
+
+           Change password? <input name="changepassword" type="checkbox" /> <br />
+            &nbsp; Password: <input name="auth1" type="password" /> <br />
+            &nbsp; Re-type password: <input name="auth2" type="password" /> <br />
+
+           Name: <input name="name" type="text" value="${context.user.name?xhtml}"/> <br />
+
+           Information:<br /> <textarea name="info" rows=5 cols="40">${context.user.info?xhtml}</textarea><br />
+
+           <input type="hidden" name="seckey" value="${securityKey}"/>
+           <input type="submit" value="Save" />
+           </form>
+       </div>
+   </#if>
+<#else>
+   <h1>No user ${context.path}</h1>
+   <a href="${api.getUrl("edituser", context.path)}">Create?</a>
+</#if>
+
+<#include "footer">

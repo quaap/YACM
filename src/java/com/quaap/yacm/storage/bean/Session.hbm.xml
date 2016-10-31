@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 14, 2009 10:05:10 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.quaap.yacm.storage.bean.Session" table="yacm_session">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="ip" type="string">
+      <column length="15" name="ip"/>
+    </property>
+    <!-- <property name="uniqueid" type="string">
+      <column length="1024" name="uniqueid"/>
+    </property> -->
+    <many-to-one class="com.quaap.yacm.storage.bean.User" column="user" name="user"/>
+    <property name="seckey" type="string">
+      <column length="64" name="seckey"/>
+    </property>
+    <property name="lastaccessed" type="timestamp">
+      <column name="lastaccessed"/>
+    </property>
+  </class>
+</hibernate-mapping>

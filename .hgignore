@@ -1,0 +1,9 @@
+syntax: glob
+bin
+build
+out
+dist
+.svn
+*/.svn
+CVS
+*/CVS

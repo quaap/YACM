@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 14, 2009 10:05:10 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.quaap.yacm.storage.bean.Group" table="yacm_ugroup">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="groupname" type="string">
+      <column length="128" name="groupname"/>
+    </property>
+    <set name="users" table="yacm_usergroup">
+      <key column="ugroup"/>
+      <many-to-many class="com.quaap.yacm.storage.bean.User" column="user"/>
+    </set>
+  </class>
+</hibernate-mapping>

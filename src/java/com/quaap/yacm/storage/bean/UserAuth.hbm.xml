@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 14, 2009 10:05:10 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.quaap.yacm.storage.bean.UserAuth" table="yacm_userauth">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="userid" type="java.lang.Integer">
+      <column name="userid"/>
+    </property>
+    <property name="auth" type="binary">
+      <column length="64" name="auth"/>
+    </property>
+    <property name="salt" type="binary">
+      <column length="8" name="salt"/>
+    </property>
+  </class>
+</hibernate-mapping>

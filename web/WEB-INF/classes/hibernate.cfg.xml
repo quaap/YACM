@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/taz1</property>
+    <property name="hibernate.connection.username">taz1</property>
+    <property name="hibernate.connection.password">taz1</property>
+
+    <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <!--<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>-->
+    <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+    <property name="hibernate.cache.use_query_cache">true</property>
+    <property name="hibernate.cache.use_second_level_cache">true</property>
+
+
+    <!--
+    <class-cache class="com.craptaculus.yacm.storage.bean.Content" usage="read-write" />
+    <class-cache class="com.craptaculus.yacm.storage.bean.ContentPermission" usage="read-write" />
+    <class-cache class="com.craptaculus.yacm.storage.bean.User" usage="read-write" />
+    <class-cache class="com.craptaculus.yacm.storage.bean.UserAuth" usage="read-write" />
+    <class-cache class="com.craptaculus.yacm.storage.bean.Group" usage="read-write" />
+    <class-cache class="com.craptaculus.yacm.storage.bean.MetaData" usage="read-write" />
+    <class-cache class="com.craptaculus.yacm.storage.bean.ContentHistory" usage="read-write" />
+    -->
+
+
+   <property name="hibernate.c3p0.min_size">2</property>
+   <property name="hibernate.c3p0.max_size">20</property>
+   <property name="hibernate.c3p0.timeout">500</property>
+   <property name="hibernate.c3p0.max_statements">100</property>
+
+
+    <mapping resource="com/craptaculus/yacm/storage/bean/Metadata.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/Content.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/BinContent.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/User.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/UserAuth.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/Group.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/ContentHistory.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/ContentPermission.hbm.xml"/>
+    <mapping resource="com/craptaculus/yacm/storage/bean/Visit.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

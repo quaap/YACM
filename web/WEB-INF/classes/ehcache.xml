@@ -1,0 +1,31 @@
+
+<ehcache>
+   <diskStore path="java.io.tmpdir"/>
+   <defaultCache
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="240"
+        overflowToDisk="true"
+        />
+
+   <cache
+        name="com.craptaculus.yacm.storage.bean.Content"
+        maxElementsInMemory="200"
+        eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="240"
+        overflowToDisk="true"
+        />
+
+<!--
+13:20:03,358  WARN EhCacheProvider:86 - Could not find configuration [com.craptaculus.yacm.storage.bean.Group]; using defaults.
+13:20:03,835  WARN EhCacheProvider:86 - Could not find configuration [com.craptaculus.yacm.storage.bean.User]; using defaults.
+13:20:03,845  WARN EhCacheProvider:86 - Could not find configuration [com.craptaculus.yacm.storage.bean.UserAuth]; using defaults.
+13:20:03,857  WARN EhCacheProvider:86 - Could not find configuration [com.craptaculus.yacm.storage.bean.ContentPermission]; using defaults.
+13:20:03,874  WARN EhCacheProvider:86 - Could not find configuration [com.craptaculus.yacm.storage.bean.Metadata]; using defaults.
+13:20:03,886  WARN EhCacheProvider:86 - Could not find configuration [com.craptaculus.yacm.storage.bean.ContentHistory]; using defaults.
+13:20:03,985  WARN EhCacheProvider:86 - Could not find configuration [org.hibernate.cache.UpdateTimestampsCache]; using defaults.
+13:20:03,987  WARN EhCacheProvider:86 - Could not find configuration [org.hibernate.cache.StandardQueryCache]; using defaults.
+-->
+</ehcache>
